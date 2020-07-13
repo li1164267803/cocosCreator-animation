@@ -9,6 +9,7 @@ cc.Class({
     onLoad() {
         // 使用事件名来注册
         this.node.on('touchstart', function (event) {
+            if (this.seq != null) this.monster.node.stopAction(this.seq);
             let pos = event.getLocation(); // 获取的是世界的坐标
             // 世界坐标系，转换为本地坐标系
             let end = pos = this.node.convertToNodeSpaceAR(pos);
@@ -36,13 +37,31 @@ cc.Class({
         let color2 = cc.tintTo(0.5, new cc.Color(255, 255, 255));
         let colorSeq = cc.sequence(color1, color2);
         let sp = cc.spawn(scaleSeq, moveTo1, colorSeq); // 同步执行
+        let arr = this.monster.getClips(); // 获取所有的 Animation
 
         // callBack
-        let callBack = cc.callFunc(() => {
-            console.log('执行一段代码');
+        let callBack1 = cc.callFunc(() => {
+            let end = { x: 183, y: 110 }
+            let start = this.monster.node.getPosition();
+            let index = this.getDirection(start, end); // 获取角度的下标
+            this.monster.play(arr[index].name); // 根据下标 播放对应的 Animation
         })
-        let seq = cc.sequence(sp, moveTo2, callBack, moveTo3); // 顺序执行
+        let callBack2 = cc.callFunc(() => {
+            let end = { x: -84, y: 79 }
+            let start = this.monster.node.getPosition();
+            let index = this.getDirection(start, end); // 获取角度的下标
+            this.monster.play(arr[index].name); // 根据下标 播放对应的 Animation
+        })
+        let callBack3 = cc.callFunc(() => {
+            let end = { x: 82, y: -184 }
+            let start = this.monster.node.getPosition();
+            let index = this.getDirection(start, end); // 获取角度的下标
+            this.monster.play(arr[index].name); // 根据下标 播放对应的 Animation
+        })
+
+        let seq = cc.sequence(callBack1, sp, callBack2, moveTo2, callBack3, moveTo3); // 顺序执行
         this.monster.node.runAction(seq);
+
     },
     moveToPoint(start, end) { // 移动速度
         if (this.moveAction != null) this.monster.node.stopAction(this.moveAction);
@@ -55,6 +74,41 @@ cc.Class({
         this.moveAction = cc.moveTo(t, end);
         // 执行动作
         this.monster.node.runAction(this.moveAction);
+    },
+    moveToCapy(pos) {
+        let end = this.node.convertToNodeSpaceAR(pos);
+        // 时间 = 距离/速度
+        let dis = this.getDistance(this.monster.node.getPosition(), end);
+        let t = dis / 100;
+        let moveTo = cc.moveTo(t, cc.v2(end.x, end.y));
+        let arr = this.monster.getClips(); // 获取所有的 Animation
+        // callBack
+        let callBack = cc.callFunc(() => {
+            let start = this.monster.node.getPosition();
+            let index = this.getDirection(start, end); // 获取角度的下标
+            this.monster.play(arr[index].name); // 根据下标 播放对应的 Animation
+        })
+        return [callBack, moveTo]; // callBack 设置人物的转向 moveTo 去到的地方
+    },
+    goToMonsterArr() { // 怪物走的路线
+        if (this.moveAction != null) this.monster.node.stopAction(this.moveAction);
+        this.monster.node.setPosition(-226, -228);
+        let arr = [
+            { x: 410, y: 152, z: 0 },
+            { x: 414, y: 245, z: 0 },
+            { x: 655, y: 244, z: 0 },
+            { x: 650, y: 327, z: 0 },
+            { x: 489, y: 324, z: 0 },
+            { x: 495, y: 409, z: 0 },
+            { x: 764, y: 407, z: 0 },
+            { x: 759, y: 320, z: 0 },
+            { x: 898, y: 328, z: 0 },
+            { x: 895, y: 481, z: 0 },
+        ];
+        let brr = [];
+        arr.forEach(v => brr.push(...this.moveToCapy(v)));
+        this.seq = cc.sequence(...brr); // 顺序执行
+        this.monster.node.runAction(this.seq);
     },
     getDirection(start, end) { // 获取前进的方向
         let rot = this.getAngle(start, end)
@@ -91,7 +145,10 @@ cc.Class({
         }
         return 90 - angle;
     },
-    start() {},
+    changePage() {
+        cc.director.loadScene("ui");
+    },
+    start() { },
 
     // update (dt) {},
 });
