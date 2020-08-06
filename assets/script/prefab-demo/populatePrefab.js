@@ -30,9 +30,9 @@ cc.Class({
     addSpawn() {
         // 已渲染速 > 生成总数量停止
         if (this.spawnCount >= this.numnerToSpawn) return this.clearRepeater();
-        let monster = cc.instantiate(this.prefab);
-        monster.parent = this.root;
-        monster.position = this.getRandomPosition();
+        let monster = cc.instantiate(this.prefab); // 创建一个节点
+        monster.parent = this.root; // 挂载在root跟节点上 或使用 this.canvas.node.addChild(monster);
+        monster.position = this.getRandomPosition(); // 设置位置信息
         this.spawnCount++;
     },
     getRandomPosition() { // 获取随机的位置坐标

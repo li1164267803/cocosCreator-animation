@@ -510,7 +510,9 @@
     "prefab": {
       "__uuid__": "172e1495-f76f-4062-b06e-10138366b69a"
     },
-    "canvas": null,
+    "canvas": {
+      "__id__": 8
+    },
     "numnerToSpawn": 5,
     "spawnInterval": 0.1,
     "_id": "eesSvsmcFMGJImhMT4zcBI"
