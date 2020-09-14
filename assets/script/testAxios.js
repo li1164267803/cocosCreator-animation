@@ -1,5 +1,4 @@
 const api = require('api');
-import axios from 'axios';
 // import { Message } from 'element-ui'
 
 cc.Class({
@@ -18,7 +17,9 @@ cc.Class({
         // },
     },
 
-    onLoad() { },
+    onLoad() {
+      
+     },
     textAxios() {
         // let div = document.createElement('div');
         // div.innerHTML = '78797979';
@@ -48,17 +49,10 @@ cc.Class({
         // 环境
         console.log(window.BASE_API);
 
-        let url = 'https://sto-b2btplus.static.chanjet.com/90005084775/intetest/product/wechatposter/307/207458%201596615897345.jpg'
-        // const res = await axios.create().get(row.agent_file_url, { responseType: 'blob' });
-        // filesaver.saveAs(res.data, row.agent_file_name)
-        axios.create().get(url, { responseType: 'blob' }).then((res) => {
-            console.log(res);
-
+        let data = { "chapterId": "209253061272838144", "classId": "209253545916276736", "taskType": 1 };
+        api.queryTaskStatus(data).then((res) => {
+            console.log(res)
         })
-        // let data = { "chapterId": "209253061272838144", "classId": "209253545916276736", "taskType": 1 };
-        // api.queryTaskStatus(data).then((res) => {
-        //     console.log(res)
-        // })
     },
     onSEE() {
         if ('EventSource' in window) {

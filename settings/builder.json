@@ -5,10 +5,9 @@
   "excludeScenes": [
     "64c3a72f-e794-432e-b770-86744e995bc2",
     "7d58e878-c3e7-431a-8b5e-aece50b1bd43",
-    "1c40edeb-ba89-4f23-a043-639acf0f5b0f",
     "fe497d80-6ae9-4f9b-a358-79f6245ae57d",
-    "4798c293-0c16-4b0b-97aa-2b307d47ac14",
-    "1198ddd1-740d-4141-b44c-d988568dcdd6"
+    "1198ddd1-740d-4141-b44c-d988568dcdd6",
+    "4798c293-0c16-4b0b-97aa-2b307d47ac14"
   ],
   "includeSDKBox": false,
   "orientation": {
